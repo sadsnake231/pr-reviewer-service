@@ -1,4 +1,3 @@
-.PHONY: help build run test test-integration test-coverage lint clean migrate-up migrate-down migrate-status migrate-create migrate-reset docker-build docker-up docker-down docker-logs load-test
 
 help:
 	@echo "Available commands:"
