@@ -1,0 +1,29 @@
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  enable:
+    - govet
+    - errcheck
+    - staticcheck
+    - unused
+    - ineffassign
+    - bodyclose
+    - dupl
+    - gocyclo
+    - gosec
+
+issues:
+  exclude-rules:
+    - linters:
+        - errcheck
+      text: "Close"
+    - linters:
+        - gocyclo
+      max-complexity: 15
+
+output:
+  format: colored-line-number

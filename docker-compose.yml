@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: pr_reviewer_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: reviewer_service
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  service:
+    build: .
+    container_name: pr_reviewer_service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SERVICE_HOST: 0.0.0.0
+      SERVICE_PORT: 8080
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: reviewer_service
+      DB_SSL_MODE: disable
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
